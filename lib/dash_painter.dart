@@ -18,7 +18,7 @@ class DashedPainter extends CustomPainter {
   final StrokeCap strokeCap;
   final PathBuilder? customPath;
   final EdgeInsets padding;
-  final Animation? animation;
+  final Animation<double>? animation;
 
   DashedPainter({
     this.strokeWidth = 2,

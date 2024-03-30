@@ -27,7 +27,7 @@ class DottedBorder extends StatelessWidget {
   final StrokeCap strokeCap;
   final PathBuilder? customPath;
   final StackFit stackFit;
-  final Animation? animation;
+  final Animation<double>? animation;
   final bool childOnTop;
 
   DottedBorder({
