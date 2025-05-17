@@ -1,3 +1,6 @@
+### [3.0.1] - 17 May, 2023
+- Format code
+
 ### [3.0.0] - 17 May, 2023
 - BREAKING changes to DottedBorder API
 

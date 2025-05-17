@@ -58,10 +58,11 @@ class DashedPainter extends CustomPainter {
       originalSize.height - padding.vertical,
     );
 
-    Paint paint = Paint()
-      ..strokeWidth = strokeWidth
-      ..strokeCap = strokeCap
-      ..style = PaintingStyle.stroke;
+    Paint paint =
+        Paint()
+          ..strokeWidth = strokeWidth
+          ..strokeCap = strokeCap
+          ..style = PaintingStyle.stroke;
 
     if (gradient != null) {
       final rect = Offset.zero & size;
@@ -85,11 +86,11 @@ class DashedPainter extends CustomPainter {
 
   /// Returns the path to be drawn based on the [borderType]
   Path _getPath(Size size) => switch (borderType) {
-        BorderType.RRect => size.toRoundedRectangularPath(radius),
-        BorderType.Oval => size.toOvalPath(),
-        BorderType.Circle => size.toCirclePath(),
-        _ => size.toRectangularPath(),
-      };
+    BorderType.RRect => size.toRoundedRectangularPath(radius),
+    BorderType.Oval => size.toOvalPath(),
+    BorderType.Circle => size.toCirclePath(),
+    _ => size.toRectangularPath(),
+  };
 
   @override
   bool shouldRepaint(DashedPainter oldDelegate) =>
@@ -107,37 +108,29 @@ class DashedPainter extends CustomPainter {
 /// Provides extension methods on [Size] to convert it to a path.
 extension _SizeToPathExtension on Size {
   /// Returns a rectangular path of the given size.
-  Path toRectangularPath() => Path()
-    ..addRect(
-      Rect.fromLTWH(0, 0, width, height),
-    );
+  Path toRectangularPath() =>
+      Path()..addRect(Rect.fromLTWH(0, 0, width, height));
 
   /// Returns a rounded rectangular path of the given size and radius.
-  Path toRoundedRectangularPath(Radius radius) => Path()
-    ..addRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(0, 0, width, height),
-        radius,
-      ),
-    );
+  Path toRoundedRectangularPath(Radius radius) =>
+      Path()..addRRect(
+        RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, width, height), radius),
+      );
 
   /// Returns an oval path of the given size.
-  Path toOvalPath() => Path()
-    ..addOval(
-      Rect.fromLTWH(0, 0, width, height),
-    );
+  Path toOvalPath() => Path()..addOval(Rect.fromLTWH(0, 0, width, height));
 
   /// Returns a circular path of the given size.
-  Path toCirclePath() => Path()
-    ..addRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(
-          width > shortestSide ? (width - shortestSide) / 2 : 0,
-          height > shortestSide ? (height - shortestSide) / 2 : 0,
-          shortestSide,
-          shortestSide,
+  Path toCirclePath() =>
+      Path()..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(
+            width > shortestSide ? (width - shortestSide) / 2 : 0,
+            height > shortestSide ? (height - shortestSide) / 2 : 0,
+            shortestSide,
+            shortestSide,
+          ),
+          Radius.circular(shortestSide / 2),
         ),
-        Radius.circular(shortestSide / 2),
-      ),
-    );
+      );
 }
