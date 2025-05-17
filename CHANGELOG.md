@@ -1,3 +1,6 @@
+### [3.0.0] - 17 May, 2023
+- BREAKING changes to DottedBorder API
+
 ### [2.1.0] - 25 September, 2023
 - Add StackFit as a parameter
 

@@ -1,6 +1,6 @@
 # Dotted Border
 
-[![pub package](https://img.shields.io/badge/pub-2.1.0-blue.svg)](https://pub.dev/packages/dotted_border)
+[![pub package](https://img.shields.io/badge/pub-3.0.0-blue.svg)](https://pub.dev/packages/dotted_border)
 
 A flutter package to easily add dotted borders around widgets.
 
@@ -14,93 +14,86 @@ Wrap `DottedBorder` widget around the child widget
 
 ```dart
 DottedBorder(
-    color: Colors.black,
-    strokeWidth: 1,
-    child: FlutterLogo(size: 148),
+  child: Text(
+    'Rectangular Border',
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
+    ),
+  ),
 )
 ```
 
 ### BorderTypes
 
-This package supports the following border types at the moment
- * RectBorder
- * RRectBorder
- * CircleBorder
- * OvalBorder
+This package supports the following border options
+ * CustomPath
+ * RoundedRect
+ * Rect
+ * Circular
+ * Oval
 
 #### Example
 
 ```dart
-return DottedBorder(
-  borderType: BorderType.RRect,
-  radius: Radius.circular(12),
-  padding: EdgeInsets.all(6),
-  child: ClipRRect(
-    borderRadius: BorderRadius.all(Radius.circular(12)),
-    child: Container(
-      height: 200,
-      width: 120,
-      color: Colors.amber,
+DottedBorder(
+  options: RectDottedBorderOptions(
+    dashPattern: [10, 5],
+    strokeWidth: 2,
+    padding: EdgeInsets.all(16),
+  ),
+  child: Text(
+    'Rectangular Border',
+    style: TextStyle(
+      fontWeight: FontWeight.bold,
     ),
   ),
-);
+)
 ```
 
 ### Dash Pattern
 
-Now you can also specify the Dash Sequence by passing in an Array of Doubles
+You can also specify the Dash Sequence by passing in an Array of Doubles
 
 #### Example
 ```dart
-DottedBorder(
-    dashPattern: [6, 3, 2, 3], 
-    child: ...
-);
+RectDottedBorderOptions(
+  dashPattern: [10, 5],
+  strokeWidth: 2,
+  padding: EdgeInsets.all(16),
+)
 ```
 
 The above code block will render a dashed border with the following pattern:
 
-* 6 pixel wide dash
-* 3 pixel wide space
-* 2 pixel wide dash
-* 3 pixel wide space
+* 10 pixel wide dash
+* 5 pixel wide space
 
 ### Custom Path Border
 
-You can also specify any path as the `customPath` property when initializing the DottedBorderWidget, and it will draw it for you using the provided dash pattern.
+You can also specify a `customPath` property and it will draw it for you using the provided dash pattern.
 
 #### Example
 
 ```dart
-Path customPath = Path()
-  ..moveTo(20, 20)
-  ..lineTo(50, 100)
-  ..lineTo(20, 200)
-  ..lineTo(100, 100)
-  ..lineTo(20, 20);
-
-return DottedBorder(
-  customPath: (size) => customPath, // PathBuilder
-  color: Colors.indigo,
-  dashPattern: [8, 4],
-  strokeWidth: 2,
-  child: Container(
-    height: 220,
-    width: 120,
-    color: Colors.green.withAlpha(20),
+DottedBorder(
+  options: CustomPathDottedBorderOptions(
+    padding: const EdgeInsets.all(8),
+    color: Colors.purple,
+    strokeWidth: 2,
+    dashPattern: [10, 5],
+    customPath: (size) => Path()
+      ..moveTo(0, size.height)
+      ..relativeLineTo(size.width, 0),
   ),
-);
+  child: const Text(
+    'Custom Path Border',
+    style: TextStyle(
+      color: Colors.purple,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+)
 ```
-
-### Stroke Cap
-
-> PR submitted by [Tarekk Mohamed Abdalla](https://github.com/TarekkMA)
-
-You can set a [`StrokeCap`](https://api.flutter.dev/flutter/dart-ui/StrokeCap-class.html) to the border line endings. It can take three values
-
-* StrokeCap.Round
-* StrokeCap.Square
-* StrokeCap.Butt
 
 #### Output
 
