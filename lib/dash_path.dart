@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:flutter/foundation.dart';
+
 /// Creates a new path that is drawn from the segments of `source`.
 ///
 /// Dash intervals are controlled by the `dashArray` - see [CircularIntervalList]
@@ -16,8 +18,6 @@ Path dashPath(
   double? animationValue,
   DashOffset? dashOffset,
 }) {
-  assert(dashArray != null); // ignore: unnecessary_null_comparison
-
   dashOffset = dashOffset ?? const DashOffset.absolute(0.0);
   // TODO: Is there some way to determine how much of a path would be visible today?
 
@@ -60,12 +60,13 @@ Path dashPath(
   return dest;
 }
 
-enum _DashOffsetType { Absolute, Percentage }
+enum _DashOffsetType { absolute, percentage }
 
 /// Specifies the starting position of a dash array on a path, either as a
 /// percentage or absolute value.
 ///
 /// The internal value will be guaranteed to not be null.
+@immutable
 class DashOffset {
   /// Create a DashOffset that will be measured as a percentage of the length
   /// of the segment being dashed.
@@ -73,19 +74,19 @@ class DashOffset {
   /// `percentage` will be clamped between 0.0 and 1.0.
   DashOffset.percentage(double percentage)
       : _rawVal = percentage.clamp(0.0, 1.0),
-        _dashOffsetType = _DashOffsetType.Percentage;
+        _dashOffsetType = _DashOffsetType.percentage;
 
   /// Create a DashOffset that will be measured in terms of absolute pixels
   /// along the length of a [Path] segment.
   const DashOffset.absolute(double start)
       : _rawVal = start,
-        _dashOffsetType = _DashOffsetType.Absolute;
+        _dashOffsetType = _DashOffsetType.absolute;
 
   final double _rawVal;
   final _DashOffsetType _dashOffsetType;
 
   double _calculate(double length) {
-    return _dashOffsetType == _DashOffsetType.Absolute ? _rawVal : length * _rawVal;
+    return _dashOffsetType == _DashOffsetType.absolute ? _rawVal : length * _rawVal;
   }
 
   @override

@@ -3,11 +3,11 @@ part of 'dotted_border.dart';
 typedef PathBuilder = Path Function(Size);
 
 /// [DashedPainter] is a custom painter that draws a dashed line around the
-/// [child] widget. The [strokeWidth] property defines the width of the dashed
+/// child widget. The [strokeWidth] property defines the width of the dashed
 /// border and [color] determines the stroke paint color. [CircularIntervalList]
 /// is populated with the [dashPattern] to render the appropriate pattern. The
 /// [radius] property is taken into account only if the [borderType] is
-/// [BorderType.RRect]. A [customPath] can be passed in as a parameter if you
+/// [BorderType.rRect]. A [customPath] can be passed in as a parameter if you
 /// want to draw a custom shaped border.
 class DashedPainter extends CustomPainter {
   final double strokeWidth;
@@ -26,15 +26,14 @@ class DashedPainter extends CustomPainter {
     this.dashPattern = const <double>[3, 1],
     this.color = Colors.black,
     this.gradient,
-    this.borderType = BorderType.Rect,
-    this.radius = const Radius.circular(0),
+    this.borderType = BorderType.rect,
+    this.radius = Radius.zero,
     this.strokeCap = StrokeCap.butt,
     this.customPath,
     this.padding = EdgeInsets.zero,
     this.animation,
-  }) : super(repaint: animation) {
-    assert(dashPattern.isNotEmpty, 'Dash Pattern cannot be empty');
-  }
+  })  : assert(dashPattern.isNotEmpty, 'Dash Pattern cannot be empty'),
+        super(repaint: animation);
 
   @override
   void paint(Canvas canvas, Size originalSize) {
@@ -49,7 +48,7 @@ class DashedPainter extends CustomPainter {
       );
     }
 
-    Paint paint = Paint()
+    final Paint paint = Paint()
       ..strokeWidth = strokeWidth
       ..strokeCap = strokeCap
       ..style = PaintingStyle.stroke;
@@ -61,34 +60,34 @@ class DashedPainter extends CustomPainter {
       paint.color = color;
     }
 
-    Path _path;
+    Path path;
     if (customPath != null) {
-      _path = dashPath(
+      path = dashPath(
         customPath!(size),
         dashArray: CircularIntervalList(dashPattern),
         animationValue: animation?.value,
       );
     } else {
-      _path = _getPath(size);
+      path = _getPath(size);
     }
 
-    canvas.drawPath(_path, paint);
+    canvas.drawPath(path, paint);
   }
 
   /// Returns a [Path] based on the the [borderType] parameter
   Path _getPath(Size size) {
     Path path;
     switch (borderType) {
-      case BorderType.Circle:
+      case BorderType.circle:
         path = _getCirclePath(size);
         break;
-      case BorderType.RRect:
+      case BorderType.rRect:
         path = _getRRectPath(size, radius);
         break;
-      case BorderType.Rect:
+      case BorderType.rect:
         path = _getRectPath(size);
         break;
-      case BorderType.Oval:
+      case BorderType.oval:
         path = _getOvalPath(size);
         break;
     }
@@ -102,9 +101,9 @@ class DashedPainter extends CustomPainter {
 
   /// Returns a circular path of [size]
   Path _getCirclePath(Size size) {
-    double w = size.width;
-    double h = size.height;
-    double s = size.shortestSide;
+    final double w = size.width;
+    final double h = size.height;
+    final double s = size.shortestSide;
 
     return Path()
       ..addRRect(
@@ -164,10 +163,10 @@ class DashedPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(DashedPainter oldDelegate) {
-    return oldDelegate.strokeWidth != this.strokeWidth ||
-        oldDelegate.color != this.color ||
-        oldDelegate.dashPattern != this.dashPattern ||
-        oldDelegate.padding != this.padding ||
-        oldDelegate.borderType != this.borderType;
+    return oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.color != color ||
+        oldDelegate.dashPattern != dashPattern ||
+        oldDelegate.padding != padding ||
+        oldDelegate.borderType != borderType;
   }
 }
