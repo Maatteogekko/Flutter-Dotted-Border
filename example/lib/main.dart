@@ -1,10 +1,12 @@
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:dotted_border/dotted_border.dart';
-
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -18,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(useMaterial3: true),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Dotted Border'),
+          title: const Text('Dotted Border'),
           actions: [
             Switch(
               value: animate,
@@ -27,7 +29,7 @@ class _MyAppState extends State<MyApp> {
               onChanged: (value) => setState(() {
                 animate = value;
               }),
-            )
+            ),
           ],
         ),
         body: SafeArea(
@@ -41,6 +43,12 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>('animate', animate));
+  }
 }
 
 class Examples extends StatefulWidget {
@@ -53,12 +61,18 @@ class Examples extends StatefulWidget {
 
   @override
   State<Examples> createState() => _ExamplesState();
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<bool>('animate', animate));
+  }
 }
 
 class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin {
   late final controller = AnimationController(
     vsync: this,
-    duration: Duration(milliseconds: 500),
+    duration: const Duration(milliseconds: 500),
   );
 
   @override
@@ -102,7 +116,7 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
   Widget get rectBorderWidget {
     return DottedBorder(
       animation: controller,
-      dashPattern: [8, 4],
+      dashPattern: const [8, 4],
       strokeWidth: 2,
       child: Container(
         height: 200,
@@ -118,13 +132,14 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
       borderRadius: BorderRadius.circular(8),
       child: DottedBorder(
         animation: controller,
-        dashPattern: [8, 4],
+        dashPattern: const [8, 4],
         strokeWidth: 8,
-        padding: EdgeInsets.all(8),
-        borderPadding: EdgeInsets.all(4),
+        padding: const EdgeInsets.all(8),
+        borderPadding: const EdgeInsets.all(4),
         child: Container(
           height: 200,
           width: 120,
+          // ignore: deprecated_member_use
           color: Colors.red.withOpacity(0.5),
         ),
       ),
@@ -135,15 +150,15 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
   Widget get roundedRectBorderWidget {
     return DottedBorder(
       animation: controller,
-      borderType: BorderType.RRect,
-      radius: Radius.circular(12),
+      borderType: BorderType.rRect,
+      radius: const Radius.circular(12),
       // padding: EdgeInsets.all(6),
-      borderPadding: EdgeInsets.all(3),
-      dashPattern: [20, 4],
+      borderPadding: const EdgeInsets.all(3),
+      dashPattern: const [20, 4],
       strokeWidth: 2,
       childOnTop: false,
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+        borderRadius: const BorderRadius.all(Radius.circular(12)),
         child: Container(
           height: 200,
           width: 120,
@@ -155,7 +170,7 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
 
   /// Draw a border with custom path border
   Widget get customBorder {
-    Path customPath = Path()
+    final Path customPath = Path()
       ..moveTo(20, 20)
       ..lineTo(50, 100)
       ..lineTo(20, 200)
@@ -166,7 +181,7 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
       animation: controller,
       customPath: (_) => customPath,
       color: Colors.indigo,
-      dashPattern: [8, 4],
+      dashPattern: const [8, 4],
       strokeWidth: 2,
       child: Container(
         height: 220,
@@ -180,11 +195,11 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
   Widget get roundStrokeCap {
     return DottedBorder(
       animation: controller,
-      dashPattern: [8, 4],
+      dashPattern: const [8, 4],
       strokeWidth: 2,
       strokeCap: StrokeCap.round,
-      borderType: BorderType.RRect,
-      radius: Radius.circular(5),
+      borderType: BorderType.rRect,
+      radius: const Radius.circular(5),
       child: Container(
         height: 200,
         width: 120,
@@ -196,7 +211,7 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
   Widget get solidBorder {
     return DottedBorder(
       animation: controller,
-      dashPattern: [4, 3],
+      dashPattern: const [4, 3],
       strokeWidth: 2,
       strokeCap: StrokeCap.round,
       child: Container(
@@ -220,5 +235,11 @@ class _ExamplesState extends State<Examples> with SingleTickerProviderStateMixin
         child: Container(),
       ),
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<AnimationController>('controller', controller));
   }
 }
